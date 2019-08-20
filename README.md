@@ -1,59 +1,47 @@
-# Object-Detection
-Object Detection Using COCO and YOLOv3 Model
+# Federated Learning
 
-Dependencies
-To use ImageAI in your application developments, you must have installed the following dependencies before you install ImageAI :
+This is partly the reproduction of the paper of [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629)   
+Only experiments on MNIST and CIFAR10 (both IID and non-IID) is produced by far.
 
+Note: The scripts will be slow without the implementation of parallel computing. 
 
-- Python 3.5.1 (and later versions) Download (Support for Python 2.7 coming soon) 
-- pip3 Install 
-- Tensorflow 1.4.0 (and later versions) Install or install via pip
+## Run
 
-      pip3 install --upgrade tensorflow 
-    
-- Numpy 1.13.1 (and later versions) Install or install via pip
+The MLP and CNN models are produced by:
+> python [main_nn.py](main_nn.py)
 
-      pip3 install numpy 
-    
-- SciPy 0.19.1 (and later versions) Install or install via pip
+The testing accuracy of MLP on MINST: 92.14% (10 epochs training) with the learning rate of 0.01.
+The testing accuracy of CNN on MINST: 98.37% (10 epochs training) with the learning rate of 0.01.
 
-      pip3 install scipy 
-    
-- OpenCV Install or install via pip
+Federated learning with MLP and CNN is produced by:
+> python [main_fed.py](main_fed.py)
 
-      pip3 install opencv-python 
-    
-- Pillow Install or install via pip
+See the arguments in [options.py](utils/options.py). 
 
-      pip3 install pillow 
-    
-- Matplotlib Install or install via pip
-    
-      pip3 install matplotlib 
-    
--  h5py Install or install via pip
-
-        pip3 install h5py 
-      
-- Keras 2.x Install or install via pip
-    
-      pip3 install keras
-    
-Installation
-To install ImageAI, run the python installation instruction below in the command line: 
-
-    pip3 install https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.2/imageai-2.0.2-py3-none-any.whl 
+For example:
+> python main_fed.py --dataset mnist --num_channels 1 --model cnn --epochs 50 --gpu 0 
 
 
-or download the Python Wheel imageai-2.0.2-py3-none-any.whl and run the python installation instruction in the command line to the path of the file like the one below: 
+## Results
+### MNIST
+Results are shown in Table 1 and Table 2, with the parameters C=0.1, B=10, E=5.
 
-    pip3 install C:\User\MyUser\Downloads\imageai-2.0.2-py3-none-any.whl 
+Table 1. results of 10 epochs training with the learning rate of 0.01
 
-Pre-trained coco model -- [RetinaNet](https://github-production-release-asset-2e65be.s3.amazonaws.com/125932201/e7ab678c-6146-11e8-85cc-26bc1cd06ab0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20190509%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20190509T080531Z&X-Amz-Expires=300&X-Amz-Signature=15c27bead0ca5 )
+| Model     | Acc. of IID | Acc. of Non-IID|
+| -----     | -----       | ----           |
+| FedAVG-MLP|  85.66%     | 72.08%         |
+| FedAVG-CNN|  95.00%     | 74.92%         |
 
-Pre-trained YOLOV3 Model --[YOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5)
+Table 2. results of 50 epochs training with the learning rate of 0.01
+
+| Model     | Acc. of IID | Acc. of Non-IID|
+| -----     | -----       | ----           |
+| FedAVG-MLP| 84.42%      | 88.17%         |
+| FedAVG-CNN| 98.17%      | 89.92%         |
 
 
-References-
-https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Detection/VIDEO.md#customvideodetection
-https://pjreddie.com/darknet/yolo/
+## Requirements
+python 3.6
+
+pytorch 0.4
